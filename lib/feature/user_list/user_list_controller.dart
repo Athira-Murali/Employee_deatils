@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:geocoding/geocoding.dart';
 import '../../model/user_list.dart';
 
 class UserListController extends GetxController {
@@ -35,21 +34,6 @@ class UserListController extends GetxController {
       }
     } finally {
       isLoading(false);
-    }
-  }
-
-  Future<String> getLocationName(double latitude, double longitude) async {
-    try {
-      List<Placemark> placemarks =
-          await placemarkFromCoordinates(latitude, longitude);
-      if (placemarks.isNotEmpty) {
-        Placemark place = placemarks[0];
-        return '${place.locality}, ${place.administrativeArea}, ${place.country}';
-      } else {
-        return 'Unknown Location';
-      }
-    } catch (e) {
-      return 'Error loading location';
     }
   }
 }

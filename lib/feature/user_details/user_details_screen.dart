@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:user_api/feature/user_details/user_deatils_controller.dart';
 import 'package:user_api/utils/theme/theme.dart';
 
@@ -44,27 +45,80 @@ class UserDeatilsScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(5)),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 5),
-                            child: Column(
+                                horizontal: 5, vertical: 5),
+                            child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                Column(
                                   children: [
-                                    Text('${user.firstName} ${user.lastName}'),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 10),
+                                          vertical: 5, horizontal: 0),
                                       child: SizedBox(
                                           height: 50,
                                           width: 70,
                                           child: Image.network(
                                               user.profilePicture)),
-                                    )
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        Uri phoneno =
+                                            Uri.parse('+919048241678');
+                                        if (await launchUrl(phoneno)) {
+                                          debugPrint("dialer opened");
+                                        } else {
+                                          debugPrint(" is not opened");
+                                        }
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 20, top: 10, bottom: 15),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text('Contact no',
+                                                style: AppTheme.lightTheme
+                                                    .textTheme.bodyLarge
+                                                    ?.copyWith(
+                                                        color: secondaryColor)),
+                                            Text(user.phone,
+                                                style: AppTheme.lightTheme
+                                                    .textTheme.labelLarge
+                                                    ?.copyWith(
+                                                        color: primaryColor))
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
-                                Text(user.job)
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          '${user.firstName} ${user.lastName}'),
+                                      Text(user.job),
+                                      SizedBox(
+                                        width: 150,
+                                        child: Text(
+                                          user.email,
+                                          style: AppTheme
+                                              .lightTheme.textTheme.labelLarge
+                                              ?.copyWith(color: secondaryColor),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -79,62 +133,3 @@ class UserDeatilsScreen extends StatelessWidget {
         });
   }
 }
-
-
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import '../../model/user_list.dart';
-// import 'user_deatils_controller.dart';
-
-// class UserDetailsScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return GetBuilder<UserDetailsController>(
-//         init: UserDetailsController(),
-//         builder: (controller) {
-//           return Scaffold(
-//             appBar: AppBar(
-//               title: Text('User Details'),
-//             ),
-//             body: Obx(
-//               () {
-//                 if (controller.isLoading.value) {
-//                   return Center(
-//                     child: CircularProgressIndicator(),
-//                   );
-//                 } else {
-//                   return UserDetailsWidget(
-//                       user: controller.userList.value.users.first);
-//                 }
-//               },
-//             ),
-//           );
-//         });
-//   }
-// }
-
-// class UserDetailsWidget extends StatelessWidget {
-//   final UserElement user;
-
-//   UserDetailsWidget({required this.user});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         CircleAvatar(
-//           backgroundImage: NetworkImage(user.profilePicture),
-//           radius: 50,
-//         ),
-//         SizedBox(height: 20),
-//         Text('ID: ${user.id}',
-//             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-//         Text('Name: ${user.firstName} ${user.lastName}',
-//             style: TextStyle(fontSize: 18)),
-//         Text('Email: ${user.email}', style: TextStyle(fontSize: 18)),
-//         // Add more details as needed
-//       ],
-//     );
-//   }
-// }
